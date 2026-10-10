@@ -1,0 +1,2 @@
+# antistres
+Interaktívna antistresová pomôcka
