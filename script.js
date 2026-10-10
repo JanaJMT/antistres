@@ -18,6 +18,8 @@ const fortunes = [
 
 const ball = document.querySelector("#crystal-ball");
 const button = document.querySelector("#reveal-button");
+const revealButtonLabel = document.querySelector("#reveal-button-label");
+const fortuneNote = document.querySelector("#fortune-note");
 const breathingButton = document.querySelector("#breathing-button");
 const breathingButtonLabel = document.querySelector("#breathing-button-label");
 const breathingCue = document.querySelector("#breathing-cue");
@@ -25,6 +27,8 @@ const reading = document.querySelector(".reading");
 const readingLabel = document.querySelector("#reading-label");
 const readingText = document.querySelector("#reading-text");
 const root = document.documentElement;
+const dailyLimit = 3;
+const dailyUsageKey = "zajtra-ai-daily-fortunes";
 const palette = [
   ["#a997f3", "#f3a9d0", "#ffc89d"],
   ["#8edcc8", "#a5b4f4", "#f4c1da"],
@@ -40,6 +44,71 @@ let revealTimeout;
 let breathingInterval;
 let breathingTimeout;
 let isInhaling = false;
+let dailyCount = 0;
+let dailyDate = getToday();
+let storageAvailable = true;
+
+function getToday() {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+function loadDailyCount() {
+  try {
+    const savedUsage = window.localStorage.getItem(dailyUsageKey);
+    if (!savedUsage) return 0;
+
+    const usage = JSON.parse(savedUsage);
+    if (
+      usage.date === dailyDate &&
+      Number.isInteger(usage.count) &&
+      usage.count >= 0 &&
+      usage.count <= dailyLimit
+    ) {
+      return usage.count;
+    }
+    return 0;
+  } catch {
+    storageAvailable = false;
+    return 0;
+  }
+}
+
+function saveDailyCount() {
+  try {
+    window.localStorage.setItem(dailyUsageKey, JSON.stringify({
+      date: dailyDate,
+      count: dailyCount
+    }));
+    storageAvailable = true;
+  } catch {
+    storageAvailable = false;
+  }
+}
+
+function updateDailyStatus(preserveFortune = false) {
+  if (dailyCount >= dailyLimit) {
+    button.disabled = true;
+    revealButtonLabel.textContent = "Dnešné veštby minuté";
+    if (!preserveFortune) {
+      readingLabel.textContent = "guľa si oddýchne";
+      readingText.textContent = "Na dnes to stačí. Ďalšie veštby sa ti odkryjú zajtra. ✨";
+    }
+    fortuneNote.textContent = storageAvailable
+      ? "Na dnes to stačí — ďalšie veštby sa odkryjú zajtra."
+      : "Na dnes to stačí. Ukladanie denného limitu nie je v tomto prehliadači dostupné.";
+    return;
+  }
+
+  button.disabled = false;
+  revealButtonLabel.textContent = "Odhaľ moju veštbu";
+  const remaining = dailyLimit - dailyCount;
+  fortuneNote.textContent = storageAvailable
+    ? `Zostávajú ${remaining} ${remaining === 1 ? "veštba" : "veštby"} na dnes. Len dobré správy. ♡`
+    : `Zostávajú ${remaining} ${remaining === 1 ? "veštba" : "veštby"} v tejto návšteve. Prehliadač nepovolil uložiť denný limit.`;
+}
 
 function getNextFortune() {
   const offset = Math.floor(Math.random() * (fortunes.length - 1)) + 1;
@@ -48,6 +117,18 @@ function getNextFortune() {
 }
 
 function revealFortune() {
+  const today = getToday();
+  if (today !== dailyDate) {
+    dailyDate = today;
+    dailyCount = 0;
+  }
+  if (dailyCount >= dailyLimit) {
+    updateDailyStatus();
+    return;
+  }
+
+  dailyCount += 1;
+  saveDailyCount();
   window.clearTimeout(revealTimeout);
   paletteIndex = (paletteIndex + 1) % palette.length;
   const colors = palette[paletteIndex];
@@ -61,6 +142,7 @@ function revealFortune() {
   void reading.offsetWidth;
   reading.classList.add("fortune-arrived");
   document.body.classList.add("is-revealing");
+  updateDailyStatus(true);
 
   revealTimeout = window.setTimeout(() => {
     document.body.classList.remove("is-revealing");
@@ -104,3 +186,6 @@ function toggleBreathing() {
 
 button.addEventListener("click", revealFortune);
 breathingButton.addEventListener("click", toggleBreathing);
+
+dailyCount = loadDailyCount();
+updateDailyStatus();
