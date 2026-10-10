@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f7f3ff">
+    <meta
+      name="description"
+      content="Zajtra AI — malá dávka dobrej energie a pozitívna veštba na zajtrajšok."
+    >
+    <title>Zajtra AI — tvoja dobrá predpoveď</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Zajtra AI — úvod">
+          <span class="brand-mark" aria-hidden="true">✳</span>
+          <span>Zajtra <span class="brand-ai">AI</span></span>
+        </a>
+        <span class="today-label"><span class="status-dot" aria-hidden="true"></span> tvoja denná dávka mágie</span>
+      </header>
+
+      <section class="fortune" aria-labelledby="page-title">
+        <div class="intro">
+          <span class="eyebrow"><span aria-hidden="true">✦</span> malý odkaz z budúcnosti</span>
+          <h1 id="page-title">Zajtrajšok ti<br>pristane.</h1>
+          <p class="subtitle">Na chvíľu sa zastav. Tvoja krištáľová guľa už pre teba niečo krásne objavila.</p>
+        </div>
+
+        <div class="orb-stage" aria-hidden="true">
+          <div class="orb-halo"></div>
+          <div class="orb-orbit orbit-one"></div>
+          <div class="orb-orbit orbit-two"></div>
+          <div class="crystal-ball" id="crystal-ball">
+            <span class="orb-shine"></span>
+            <span class="orb-star star-one">✦</span>
+            <span class="orb-star star-two">✧</span>
+            <span class="orb-star star-three">·</span>
+            <span class="orb-mist"></span>
+          </div>
+          <div class="orb-base"></div>
+          <span class="sparkle sparkle-one" aria-hidden="true">✧</span>
+          <span class="sparkle sparkle-two" aria-hidden="true">✦</span>
+          <span class="sparkle sparkle-three" aria-hidden="true">·</span>
+        </div>
+
+        <div class="reading" aria-live="polite" aria-atomic="true">
+          <span class="reading-label" id="reading-label">guľa šepká</span>
+          <p class="reading-text" id="reading-text">Zatvor oči, niečo pekné sa už chystá.</p>
+        </div>
+
+        <button class="reveal-button" id="reveal-button" type="button">
+          <span>Odhaľ moju veštbu</span>
+          <span class="button-icon" aria-hidden="true">↗</span>
+        </button>
+        <p class="button-note">Len dobré správy. Sľubujeme. <span aria-hidden="true">♡</span></p>
+        <button class="breathing-button" id="breathing-button" type="button" aria-pressed="false">
+          <span class="breathing-icon" aria-hidden="true">◌</span>
+          <span id="breathing-button-label">Chvíľka pre seba · 1 min</span>
+        </button>
+        <p class="breathing-cue" id="breathing-cue" aria-live="polite" aria-atomic="true"></p>
+      </section>
+
+      <footer class="footer">
+        <span>Vesmír má s tebou dobré plány.</span>
+        <span class="footer-sparkle" aria-hidden="true">✦</span>
+      </footer>
+    </main>
+  </body>
+</html>
