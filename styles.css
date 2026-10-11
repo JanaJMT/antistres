@@ -522,12 +522,12 @@ h1 {
 
 @keyframes breathe {
   0%, 100% { transform: scale(1); filter: brightness(1); }
-  50% { transform: scale(1.07); filter: brightness(1.12); }
+  50% { transform: scale(1.24); filter: brightness(1.14); }
 }
 
 @keyframes breathe-glow {
   0%, 100% { opacity: 0.7; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.12); }
+  50% { opacity: 1; transform: scale(1.2); }
 }
 
 @media (min-width: 760px) {
